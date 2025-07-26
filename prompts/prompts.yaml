@@ -1,0 +1,60 @@
+- scenario_id: party_exposure_lvl1
+  title: Lily的生日聚会：从角落里开口说话
+  system_message: >
+    你现在在一个固定但可自由对话的暴露疗法训练场景中。你的任务是在 Lily 的生日聚会里，至少开口说出两句与当前话题相关的话，并成功加入一次群聊。请记录自己在对话前后的主观焦虑评分（SUDS 0-100）。你可以随时打字或语音与任意角色（Lily / Kevin / May）自由对话。系统会在每轮对话后给出：1) 社交信号直译（帮助你理解对方真正意图）；2) 是否完成了当前行为目标的评价；3) 抑制性学习的‘预期违背’反馈与下一步建议。
+  scene:
+    environment:
+      location: 餐厅卡座
+      people_count: 7
+      layout_hint: 你坐在靠近角落的椅子上，正对Kevin的侧脸，Lily在你右前方。
+    entry_prompt: >
+      你被 Lily 邀请到她的生日聚会。你坐在靠近角落的椅子上。Kevin（Lily 的男友）正在滔滔不绝地聊他的创业项目。你想加入对话，但感到紧张。
+  user_profile:
+    labels:
+      - ADHD
+      - ASD
+      - AuDHD
+      - 社交恐惧
+    core_fears:
+      - 害怕被忽视、插话后被别人嘲笑
+      - 担心找不到合适时机加入聊天，被认为“格格不入”
+      - 害怕别人对自己说“不好笑”“没意思”，或冷场
+  agents:
+    - id: kevin
+      name: Kevin
+      role: 表现欲强烈的人（主导者）
+      persona: 健谈、成就导向、喜欢被认同、语速快、偶尔轻微质疑但无恶意
+      llm_prompt: >
+        你是Kevin，Lily的男友。你正在讲你的创业项目，期待别人向你提问或认可你。若用户打断你但提出了具体问题，你会正面回应；若用户含糊，你会要求更具体。保持高能量和主导感，但不要恶意攻击。
+    - id: lily
+      name: Lily
+      role: 寿星（包容者）
+      persona: 温暖、平等、邀请式、会主动帮助用户融入
+      llm_prompt: >
+        你是Lily，今天是你的生日。你会注意到用户的紧张，主动抛出简单的问题或活动邀请来帮助TA参与。你的语气始终温柔友好，适度肯定用户的每一次尝试。
+    - id: may
+      name: May
+      role: 讨好型人格（帮衬者）
+      persona: 体贴、会过度帮忙、容易替用户回答导致用户失去练习机会
+      llm_prompt: >
+        你是May，善于照顾他人。看到用户紧张会想替TA回答或帮TA缓和情况。但如果系统提示‘请不要替代用户回答’，你应当克制，并用温和的方式鼓励用户自己表达。
+  runtime:
+    max_time: 300
+  steps:
+    - step_id: 1
+      name: 进入话题（低难度）
+      speaker: kevin
+      opening_line: 我跟你们说，我这个创业项目下个月就要融到天使轮了！
+    - step_id: 2
+      name: 集体互动（中低难度）
+      speaker: lily
+      opening_line: 我们等等要不要玩桌游？你们都玩得来吗？
+    - step_id: 3
+      name: 面对突然的提问（中等难度）
+      speaker: may
+      opening_line: 对了，你最近在忙什么呀？听Lily说你在搞一个挺有意思的东西？
+    - step_id: 4
+      name: 主动发起话题（中高难度）
+      speaker: system
+      opening_line: >
+        现在轮到你主动说点什么了：你可以对 Lily 说一段生日祝福、或者发起一个轻松的小话题（如最近看过的电影/旅行计划）。
